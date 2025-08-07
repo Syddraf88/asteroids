@@ -8,6 +8,10 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shot_timer = 0
+        self.velocity = pygame.Vector2(0, 0)
+        self.acceleration_rate = 200
+        self.drag = DRAG
+        self.max_speed = MAX_PLAYER_SPEED
 
     # in the player class
 
@@ -39,11 +43,16 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        
+        #Applies velocity to position
+        self.position += self.velocity * dt
+        #Apllies drag to slow down
+        self.velocity *= self.drag
             
     
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * dt
+        self.velocity += forward * self.acceleration_rate * dt
 
     def shoot(self):
         if self.shot_timer > 0:

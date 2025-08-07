@@ -57,14 +57,15 @@ def main():
            
         for asteroid in asteroids:
            if asteroid.colision(player):
-               initials = input("Enter Initials: ")
-               high_scores.append((initials, score))
-               high_scores = sorted(high_scores, key=lambda x: x[1], reverse=True)[0:5]
+               if len(high_scores) < 5 or score > high_scores[4][1]:
+                    initials = input("Enter Initials: ")
+                    high_scores.append((initials, score))
+                    high_scores = sorted(high_scores, key=lambda x: x[1], reverse=True)[0:5]
                print(f"Game over! You scored {score} points!")
                print("----- HIGH SCORES -----")
                for entry in high_scores:
                         print(f"Player: {entry[0]} Score: {entry[1]}")
-               print(high_scores)
+               
                try:
                    with open("champions.json", "w") as f:
                     json.dump(high_scores, f)
